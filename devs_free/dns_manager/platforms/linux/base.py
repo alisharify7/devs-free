@@ -3,6 +3,7 @@ import re
 import json
 import pathlib
 import subprocess
+import typing
 
 import questionary
 
@@ -16,6 +17,14 @@ class Linux(BasePlatformDNS):
     don't use this class directly, use `devs_free.dns_manager.linux.Linux` instead.
     """
     def __init__(self):
+        """
+        init method.
+        user must install the following packages for interacting with dns and output commands.
+            - grep
+            - nmcli
+        in this method we simply just checks user has the following packager installed in its own
+        os or not.
+        """
         super().__init__()
 
         # check requirement apps are installed (grep, nmcli).
@@ -28,16 +37,37 @@ class Linux(BasePlatformDNS):
             raise NotInstalledError("`nmcli` is not installed.")
 
     @staticmethod
-    def get_all_ethernet_interfaces():
-        """this method returns all available ethernet interfaces."""
-        regex_patterns = r"^Ethernet adapter (.*):"
+    def get_all_ethernet_interfaces() -> typing.List[str]:
+        """
+        this method returns all available ethernet interfaces.
+        :return: list of all available ethernet interfaces.
+        :rtype: typing.List[str]
+        """
+        regex_pattern = r"^(\S+)\s+(\S+)\s+(\S+)\s+--(.*)$"
+        expected_output_regex_pattern = r"^(DEVICE) .+(TYPE) .+(STATE) .+(CONNECTION)$"
         output = subprocess.check_output(
-            ["ipconfig", ]
+            ["nmcli", "device", "status"]
         ).decode()
-        result = re.findall(regex_patterns, output, re.MULTILINE)
-        return result
+        if not re.match(expected_output_regex_pattern, output):
+            raise Exception("an error occurred in fetching all ethernet interfaces")
 
-    def get_selected_ethernet_interfaces(self):
+        interfaces = []
+        result = re.findall(regex_pattern, output, re.MULTILINE)
+        for each in result:
+            device, ttype, state, connection = each
+            interfaces.append(f"{device}, {ttype}, {state}, {connection}")
+
+        return interfaces
+
+
+
+    def get_selected_ethernet_interfaces(self) -> str:
+        """
+        this method returns user selected ethernet interfaces.
+
+        :return: selected ethernet interfaces.
+        :rtype: str
+        """
         if not self.does_config_exist():
             self.set_up_init_config()
 
