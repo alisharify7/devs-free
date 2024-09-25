@@ -2,7 +2,13 @@ from abc import ABC
 
 
 class BasePlatform(ABC):
+    """Base Platform OS class.
+    all managers classes should inherit from this class.
+    this class contain global information that should every
+    manager class know.
+    """
 
+    # DNS CONFIG
     dns_config_file = "devs_free_dns.json"
     dns_default_config = {
         "default-ethernet-interface": None,
@@ -28,6 +34,7 @@ class BasePlatform(ABC):
         }
     }
 
+    # APT CONFIG
     apt_config_file = "devs_free_apt.json"
     apt_default_config = {
         "mirror-url": None,
@@ -40,6 +47,7 @@ class BasePlatform(ABC):
         }
     }
 
+    # PIP CONFIG
     pip_config_file = "devs_free_pip.json"
     pip_default_config = {
         "mirror-url": None,
