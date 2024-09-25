@@ -1,5 +1,5 @@
 import click
-from devs_free.dns_manager.main import dns
+from devs_free.dns_manager import dns_cli
 from devs_free.config_manager import config
 from devs_free.utils import print_app_typography
 
@@ -12,7 +12,7 @@ def devs():
 def about():
     click.echo(print_app_typography())
 
-devs.add_command(dns)
+devs.add_command(dns_cli)
 devs.add_command(config)
 
 

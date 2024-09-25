@@ -1,18 +1,14 @@
-import os
-import re
-import json
-import pathlib
-import subprocess
 from abc import ABC
-
-import questionary
-
 from devs_free.base_platforms import BasePlatform
-from devs_free.exception import NotInstalledError
 
-class PlatformBaseDNS(BasePlatform, ABC):
+class BasePlatformDNS(BasePlatform, ABC):
+    """
+    Base DNS manager class.
+    all dns manager classes should inherit from this class,
+    and implement the all methods that this class contain.
+    """
     def get_all_ethernet_interfaces(self):
-        pass
+        raise NotImplemented()
 
     def get_selected_ethernet_interfaces(self):
         raise NotImplemented()
