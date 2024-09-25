@@ -1,21 +1,27 @@
-import json
 import os
-import pathlib
 import re
+import json
+import pathlib
 import subprocess
 
 import questionary
 
-from devs_free.base_platforms import BasePlatform
+from devs_free.dns_manager.base_platforms import BasePlatformDNS
 from devs_free.exception import NotInstalledError
 from devs_free.base_platforms import BasePlatform
 
-class Linux():
+class Linux(BasePlatformDNS):
+    """
+    Base Linux DNS manager class.
+    don't use this class directly, use `devs_free.dns_manager.linux.Linux` instead.
+    """
     def __init__(self):
         super().__init__()
+
+        # check requirement apps are installed (grep, nmcli).
         output = subprocess.getoutput("grep --version")
         if "grep (GNU grep)" not in output:
-            raise NotInstalledError("`grep` is not installed. install it using\n apt-get install grep")
+            raise NotInstalledError("`grep` is not installed. install it using\napt-get install grep")
 
         output = subprocess.getoutput("nmcli --version")
         if "nmcli tool," not in output:
@@ -23,11 +29,12 @@ class Linux():
 
     @staticmethod
     def get_all_ethernet_interfaces():
-        patterns = r"^Ethernet adapter (.*):"
+        """this method returns all available ethernet interfaces."""
+        regex_patterns = r"^Ethernet adapter (.*):"
         output = subprocess.check_output(
-            ["ipconfig", "/all"]
+            ["ipconfig", ]
         ).decode()
-        result = re.findall(patterns, output, re.MULTILINE)
+        result = re.findall(regex_patterns, output, re.MULTILINE)
         return result
 
     def get_selected_ethernet_interfaces(self):

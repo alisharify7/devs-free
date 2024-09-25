@@ -7,7 +7,9 @@ import questionary
 from devs_free.decorators import dns_config_required
 from devs_free.dns_manager.utils import get_dns_servers
 from devs_free.utils import detect_platform
-from devs_free.dns_manager.platforms import Mac, Linux, Windows
+
+from devs_free.dns_manager.platforms.linux.platform import Linux
+from devs_free.dns_manager.platforms.windows.platform import Windows
 
 
 @click.group()
