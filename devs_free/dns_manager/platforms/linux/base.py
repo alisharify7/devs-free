@@ -109,6 +109,7 @@ class Linux(BasePlatformDNS):
             json.dump(config_object, fp=f)
 
     def set_up_init_config(self):
+        """Set up init config"""
         # get default interface
         interfaces = Linux.get_all_ethernet_interfaces()
         selected_interface = questionary.select(

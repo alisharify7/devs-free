@@ -1,5 +1,15 @@
-class Windows(BaseDNSplatform):
+import re
+import subprocess
+import os
+import json
+import pathlib
+from devs_free.dns_manager.base_platforms import BasePlatformDNS
 
+
+import questionary
+
+
+class Windows(BasePlatformDNS):
     @staticmethod
     def get_all_ethernet_interfaces():
         # Using `ip link show` to get interface details
@@ -15,7 +25,7 @@ class Windows(BaseDNSplatform):
         if not self.does_config_exist():
             self.set_up_init_config()
 
-        with open(self.get_config_dir() / BasePlatform.config_file, "r") as f:
+        with open(self.get_config_dir() / BasePlatformDNS.config_file, "r") as f:
             data = json.load(fp=f)
         return data['dns']['default-ethernet-interface']
 
@@ -28,7 +38,7 @@ class Windows(BaseDNSplatform):
 
     def does_config_exist(self):
         """check if config file exists or not"""
-        return os.path.exists(self.get_config_dir() / BasePlatform.config_file)
+        return os.path.exists(self.get_config_dir() / BasePlatformDNS.config_file)
 
     def get_config_dir(self):
         """get config directory"""
@@ -36,18 +46,18 @@ class Windows(BaseDNSplatform):
 
     def create_config_file(self):
         """create config file """
-        with open(file=str(self.get_config_dir() / BasePlatform.config_file), mode="w") as f:
-            json.dump(BasePlatform.base_config, fp=f)
+        with open(file=str(self.get_config_dir() / BasePlatformDNS.config_file), mode="w") as f:
+            json.dump(BasePlatformDNS.base_config, fp=f)
 
     def get_config_file(self):
         if not self.does_config_exist():
             raise RuntimeError("config file does not exist")
 
-        with open(file=str(self.get_config_dir() / BasePlatform.config_file), mode="r") as f:
+        with open(file=str(self.get_config_dir() / BasePlatformDNS.config_file), mode="r") as f:
             return json.load(f)
 
     def update_config_file(self, config_object: dict):
-        with open(self.get_config_dir() / BasePlatform.config_file, "w") as f:
+        with open(self.get_config_dir() / BasePlatformDNS.config_file, "w") as f:
             json.dump(config_object, fp=f)
 
     def set_up_init_config(self):

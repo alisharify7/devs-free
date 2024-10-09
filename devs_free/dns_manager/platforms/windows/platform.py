@@ -1,3 +1,11 @@
+import json
+import re
+import subprocess
+import typing
+from .base import Windows as WindowsBase
+
+import click
+
 class Windows(WindowsBase):
     """Win64 DNS changer utils class."""
 
