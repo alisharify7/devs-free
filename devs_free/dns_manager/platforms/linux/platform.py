@@ -1,5 +1,5 @@
 import subprocess
-from devs_free.dns_manager.platforms.linux.base import Linux as LinuxBase
+from .base import Linux as LinuxBase
 
 class Linux(LinuxBase):
     """A class for managing DNS settings on Linux."""
