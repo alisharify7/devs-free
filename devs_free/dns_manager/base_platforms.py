@@ -1,3 +1,13 @@
+"""
+ * devs free ( developers free ) OSS
+ * author: github.com/alisharify7
+ * email: alisharifyofficial@gmail.com
+ * license: see LICENSE for more details.
+ * Copyright (c) 2023 - ali sharifi
+ * https://github.com/alisharify7/devs_free
+"""
+
+
 from abc import ABC
 from devs_free.base_platforms import BasePlatform
 
@@ -10,7 +20,7 @@ class BasePlatformDNS(BasePlatform, ABC):
     def get_all_ethernet_interfaces(self):
         raise NotImplemented()
 
-    def get_selected_ethernet_interfaces(self):
+    def get_main_ethernet_interfaces(self):
         raise NotImplemented()
 
     def get_current_username(self):

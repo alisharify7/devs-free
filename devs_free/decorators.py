@@ -1,7 +1,14 @@
-from functools import wraps
+"""
+ * devs free ( developers free ) OSS
+ * author: github.com/alisharify7
+ * email: alisharifyofficial@gmail.com
+ * license: see LICENSE for more details.
+ * Copyright (c) 2023 - ali sharifi
+ * https://github.com/alisharify7/devs_free
+"""
 
 import click
-
+from functools import wraps
 from devs_free.utils import detect_platform
 from devs_free.dns_manager.platforms import Linux
 
