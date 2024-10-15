@@ -10,7 +10,8 @@
 import click
 from functools import wraps
 from devs_free.utils import detect_platform
-from devs_free.dns_manager.platforms import Linux
+from devs_free.dns_manager.platforms.linux.platform import Linux
+from devs_free.dns_manager.platforms.windows.platform import Windows
 
 def dns_config_required(f):
     @wraps(f)
