@@ -1,3 +1,12 @@
+"""
+ * devs free ( developers free ) OSS
+ * author: github.com/alisharify7
+ * email: alisharifyofficial@gmail.com
+ * license: see LICENSE for more details.
+ * Copyright (c) 2023 - ali sharifi
+ * https://github.com/alisharify7/devs_free
+"""
+
 import json
 from time import sleep
 
@@ -16,11 +25,10 @@ from devs_free.dns_manager.platforms.windows.platform import Windows
 def dns():
     pass
 
-@dns.command()
+@dns.command(help="list all avialable dns servers from upstream server.")
 @dns_config_required
 def list():
     """get list of all available dns servers"""
-
     with click.progressbar(length=100, label="fetching data ...") as bar:
         for _ in range(10):
             bar.update(10)
@@ -45,13 +53,11 @@ def list():
 
 @dns.command()
 @dns_config_required
-def disconnect(): ...
-
+def status(): ...
 
 @dns.command()
 @dns_config_required
-def status(): ...
-
+def disconnect(): ...
 
 @dns.command()
 @dns_config_required
@@ -73,7 +79,7 @@ def connect():
 
     servers = [server['name'] for server in dns_server_list]
     user_selected_dns = questionary.select(
-        message="available DNS servers",
+        message="select your DNS server",
         choices=servers,
     ).ask()
 
@@ -87,7 +93,7 @@ def connect():
     elif platform == "linux":
         print(Linux().set_dns(selected_dns['servers']))
     else:
-        print(Mac().get_current_dns(selected_dns['servers']))
+        raise NotImplemented("sorry :(")
 
 
 
@@ -104,7 +110,7 @@ def active():
     elif platform == "linux":
         dns_servers = Linux().get_current_dns()
     else: # mac
-        dns_servers = Mac().get_current_dns()
+        raise NotImplemented("sorry :(")
 
     click.echo(click.style("*"* 50, fg="green"))
     for index, srv in enumerate(dns_servers):
@@ -127,28 +133,10 @@ def show_config():
     elif platform == "linux":
         config_file = Linux().get_config_file()
     else: # mac
-        config_file = Mac().get_config_file()
+        raise NotImplemented("sorry :(")
 
     click.echo(click.style("*"* 50, fg="green"))
-    print(json.dumps(config_file['dns'], indent=4))
+    click.echo(message=json.dumps(config_file['dns'], indent=4))
     click.echo(click.style("*"* 50, fg="green"), nl=False)
 
-@dns.command()
-@dns_config_required
-def delete_config():
-    """delete dns config file."""
-    pass
 
-@dns.command()
-@dns_config_required
-def configure():
-    platform = detect_platform()
-    if platform == "unsupported OS":
-        raise RuntimeError("unsupported OS.")
-
-    if platform == "windows":
-        Windows().set_up_init_config()
-    elif platform == "linux":
-        Linux().set_up_init_config()
-    else: # mac
-        Mac().set_up_init_config()
