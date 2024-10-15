@@ -27,13 +27,14 @@ class Windows(BasePlatformDNS):
         """this method returns all available ethernet interfaces
         Using `ip link show`
         """
-        patterns = r"^\d+: (.+):"
-        output = subprocess.check_output(["ip", "link", "show"]).decode()
-        result = re.findall(patterns, output, re.MULTILINE)
+        interfaces = []
+        output = subprocess.check_output(["ipconfig", "/all"]).decode()
+        for line in output.splitlines():
+            if line.startswith("Ethernet adapter"):
+                line = line.replace(":", "")
+                interfaces.append(line)
 
-        # Filter out non-ethernet interfaces
-        ethernet_interfaces = [iface for iface in result if "eth" in iface or "en" in iface]
-        return ethernet_interfaces
+        return interfaces
 
     def get_main_ethernet_interfaces(self):
         """this method returns user selected (main) ethernet interfaces"""
@@ -53,11 +54,16 @@ class Windows(BasePlatformDNS):
 
     def does_config_exist(self):
         """check if config file exists or not"""
-        return os.path.exists(self.get_config_dir() / BasePlatformDNS.config_file)
+        return os.path.exists(self.get_config_dir() / BasePlatformDNS.dns_config_file)
 
     def get_config_dir(self):
         """get config directory"""
-        return pathlib.Path(f"C:\\Users\\{Windows.get_current_username()}")
+        conf_dir = pathlib.Path(f"C:\\Users\\{Windows.get_current_username()}\\devs_free\\")
+        if os.path.exists(conf_dir):
+            return conf_dir
+        else:
+            os.mkdir(conf_dir)
+            return conf_dir
 
     def create_config_file(self):
         """create dns config file from base default config """
