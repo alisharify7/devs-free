@@ -1,14 +1,23 @@
-import json
+"""
+ * devs free ( developers free ) OSS
+ * author: github.com/alisharify7
+ * email: alisharifyofficial@gmail.com
+ * license: see LICENSE for more details.
+ * Copyright (c) 2023 - ali sharifi
+ * https://github.com/alisharify7/devs_free
+"""
+
+
 import re
-import subprocess
 import typing
-from .base import Windows as WindowsBase
+import subprocess
 
 import click
+from .base import Windows as WindowsBase
+
 
 class Windows(WindowsBase):
-    """Win64 DNS changer utils class."""
-
+    """Win64 DNS manager class."""
     def get_current_dns(self) -> typing.Union[typing.List[str], str]:
         """Retrieve the currently configured DNS servers."""
         try:
@@ -33,7 +42,7 @@ class Windows(WindowsBase):
         try:
             # Use netsh command for setting DNS
 
-            selected_ethernet_interface = self.get_selected_ethernet_interfaces()
+            selected_ethernet_interface = self.get_main_ethernet_interfaces()
 
             command = [
                 "netsh",
@@ -61,7 +70,7 @@ class Windows(WindowsBase):
             out = subprocess.run(command, capture_output=True)
             click.echo(out)
         except subprocess.CalledProcessError as e:
-            print(e)
+            print(f"Error in setting DNS servers: {e}")
 
     def unset_dns(self):
         """Unset the DNS server on the system."""
