@@ -58,7 +58,6 @@ with open("./README.md", "r") as f:
             'console_scripts': [
                 'devs_free = devs_free.cli_entrypoint:devs',
                 'devs-free = devs_free.cli_entrypoint:devs',
-                'devs = devs_free.cli_entrypoint:devs',
                 'developer-free = devs_free.cli_entrypoint:devs',
                 'developer_free = devs_free.cli_entrypoint:devs',
             ],
