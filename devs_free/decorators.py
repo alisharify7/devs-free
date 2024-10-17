@@ -13,13 +13,13 @@ from devs_free.utils import detect_platform
 from devs_free.dns_manager.platforms.linux.platform import Linux
 from devs_free.dns_manager.platforms.windows.platform import Windows
 
+
 def dns_config_required(f):
     @wraps(f)
     def inner(*args, **kwargs):
         platform = detect_platform()
         if platform == "unsupported OS":
             raise RuntimeError("unsupported OS.")
-
 
         if platform == "windows":
             if not Windows().does_config_exist():
@@ -35,4 +35,5 @@ def dns_config_required(f):
             raise NotImplemented()
 
         return f(*args, **kwargs)
+
     return inner

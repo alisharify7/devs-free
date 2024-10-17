@@ -25,6 +25,7 @@ from devs_free.dns_manager.platforms.windows.platform import Windows
 def dns():
     pass
 
+
 @dns.command(help="list all avialable dns servers from upstream server.")
 @dns_config_required
 def list():
@@ -34,12 +35,12 @@ def list():
             bar.update(10)
             sleep(0.2)
 
-    dns_server_list = get_dns_servers() # get data from internet
+    dns_server_list = get_dns_servers()  # get data from internet
     name_dns_server_mapper = dict()
     for each in dns_server_list:
-        name_dns_server_mapper[each['name']] = each
+        name_dns_server_mapper[each["name"]] = each
 
-    servers = [server['name'] for server in dns_server_list]
+    servers = [server["name"] for server in dns_server_list]
     user_selected_dns = questionary.select(
         message="available DNS servers",
         choices=servers,
@@ -47,7 +48,9 @@ def list():
 
     selected_dns = name_dns_server_mapper[user_selected_dns]
     click.echo(click.style(text=f"servers: {' , '.join(selected_dns['servers'])}"))
-    click.echo(click.style(text=f"rate: {' 🌟  ' * (selected_dns['rate'] + 1)}", overline=""))
+    click.echo(
+        click.style(text=f"rate: {' 🌟  ' * (selected_dns['rate'] + 1)}", overline="")
+    )
     click.echo(click.style(text=f"category: {', '.join(selected_dns['tags'])}"))
 
 
@@ -55,9 +58,11 @@ def list():
 @dns_config_required
 def status(): ...
 
+
 @dns.command()
 @dns_config_required
 def disconnect(): ...
+
 
 @dns.command()
 @dns_config_required
@@ -72,12 +77,12 @@ def connect():
             bar.update(10)
             sleep(0.2)
 
-    dns_server_list = get_dns_servers() # get data from internet
+    dns_server_list = get_dns_servers()  # get data from internet
     name_dns_server_mapper = dict()
     for each in dns_server_list:
-        name_dns_server_mapper[each['name']] = each
+        name_dns_server_mapper[each["name"]] = each
 
-    servers = [server['name'] for server in dns_server_list]
+    servers = [server["name"] for server in dns_server_list]
     user_selected_dns = questionary.select(
         message="select your DNS server",
         choices=servers,
@@ -85,16 +90,17 @@ def connect():
 
     selected_dns = name_dns_server_mapper[user_selected_dns]
     click.echo(click.style(text=f"servers: {' , '.join(selected_dns['servers'])}"))
-    click.echo(click.style(text=f"rate: {' 🌟  ' * (selected_dns['rate'] + 1)}", overline=""))
+    click.echo(
+        click.style(text=f"rate: {' 🌟  ' * (selected_dns['rate'] + 1)}", overline="")
+    )
     click.echo(click.style(text=f"category: {', '.join(selected_dns['tags'])}"))
 
     if platform == "windows":
-        print(Windows().set_dns(selected_dns['servers']))
+        print(Windows().set_dns(selected_dns["servers"]))
     elif platform == "linux":
-        print(Linux().set_dns(selected_dns['servers']))
+        print(Linux().set_dns(selected_dns["servers"]))
     else:
         raise NotImplemented("sorry :(")
-
 
 
 @dns.command()
@@ -109,15 +115,14 @@ def active():
         dns_servers = Windows().get_current_dns()
     elif platform == "linux":
         dns_servers = Linux().get_current_dns()
-    else: # mac
+    else:  # mac
         raise NotImplemented("sorry :(")
 
-    click.echo(click.style("*"* 50, fg="green"))
+    click.echo(click.style("*" * 50, fg="green"))
     for index, srv in enumerate(dns_servers):
         click.echo(click.style(f"\t[Server {index+1}]: ", fg="red"), nl=False)
         click.echo(click.style(srv, fg="blue"))
-    click.echo(click.style("*"* 50, fg="green"), nl=False)
-
+    click.echo(click.style("*" * 50, fg="green"), nl=False)
 
 
 @dns.command()
@@ -132,11 +137,9 @@ def show_config():
         config_file = Windows().get_config_file()
     elif platform == "linux":
         config_file = Linux().get_config_file()
-    else: # mac
+    else:  # mac
         raise NotImplemented("sorry :(")
 
-    click.echo(click.style("*"* 50, fg="green"))
-    click.echo(message=json.dumps(config_file['dns'], indent=4))
-    click.echo(click.style("*"* 50, fg="green"), nl=False)
-
-
+    click.echo(click.style("*" * 50, fg="green"))
+    click.echo(message=json.dumps(config_file["dns"], indent=4))
+    click.echo(click.style("*" * 50, fg="green"), nl=False)

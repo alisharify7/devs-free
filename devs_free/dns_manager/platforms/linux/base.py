@@ -11,11 +11,13 @@ from devs_free.dns_manager.base_platforms import BasePlatformDNS
 from devs_free.exception import NotInstalledError
 from devs_free.base_platforms import BasePlatform
 
+
 class Linux(BasePlatformDNS):
     """
     Base Linux DNS manager class.
     don't use this class directly, use `devs_free.dns_manager.linux.Linux` instead.
     """
+
     def __init__(self):
         """
         init method.
@@ -30,7 +32,9 @@ class Linux(BasePlatformDNS):
         # check requirement apps are installed (grep, nmcli).
         output = subprocess.getoutput("grep --version")
         if "grep (GNU grep)" not in output:
-            raise NotInstalledError("`grep` is not installed. install it using\napt-get install grep")
+            raise NotInstalledError(
+                "`grep` is not installed. install it using\napt-get install grep"
+            )
 
         output = subprocess.getoutput("nmcli --version")
         if "nmcli tool," not in output:
@@ -45,9 +49,7 @@ class Linux(BasePlatformDNS):
         """
         regex_pattern = r"^(\S+)\s+(\S+)\s+(\S+)\s+--(.*)$"
         expected_output_regex_pattern = r"^(DEVICE) .+(TYPE) .+(STATE) .+(CONNECTION)$"
-        output = subprocess.check_output(
-            ["nmcli", "device", "status"]
-        ).decode()
+        output = subprocess.check_output(["nmcli", "device", "status"]).decode()
         if not re.match(expected_output_regex_pattern, output):
             raise Exception("an error occurred in fetching all ethernet interfaces")
 
@@ -58,8 +60,6 @@ class Linux(BasePlatformDNS):
             interfaces.append(f"{device}, {ttype}, {state}, {connection}")
 
         return interfaces
-
-
 
     def get_selected_ethernet_interfaces(self) -> str:
         """
@@ -73,13 +73,13 @@ class Linux(BasePlatformDNS):
 
         with open(self.get_config_dir() / BasePlatform.dns_config_file, "r") as f:
             data = json.load(fp=f)
-        return data['default-ethernet-interface']
+        return data["default-ethernet-interface"]
 
     @staticmethod
     def get_current_username():
         """get current username"""
-        command = 'whoami'
-        output = subprocess.check_output([command]).decode('utf-8')
+        command = "whoami"
+        output = subprocess.check_output([command]).decode("utf-8")
         return str(output.rsplit("\\")[-1]).strip()
 
     def get_config_dir(self):
@@ -91,17 +91,21 @@ class Linux(BasePlatformDNS):
         return os.path.exists(self.get_config_dir() / BasePlatform.dns_config_file)
 
     def create_config_file(self):
-        """create config file """
+        """create config file"""
         if not os.path.exists(self.get_config_dir()):
             os.makedirs(self.get_config_dir())
-        with open(file=str(self.get_config_dir() / BasePlatform.dns_config_file), mode="w") as f:
+        with open(
+            file=str(self.get_config_dir() / BasePlatform.dns_config_file), mode="w"
+        ) as f:
             json.dump(BasePlatform.dns_base_config, fp=f)
 
     def get_config_file(self):
         if not self.does_config_exist():
             raise RuntimeError("config file does not exist")
 
-        with open(file=str(self.get_config_dir() / BasePlatform.dns_config_file), mode="r") as f:
+        with open(
+            file=str(self.get_config_dir() / BasePlatform.dns_config_file), mode="r"
+        ) as f:
             return json.load(f)
 
     def update_config_file(self, config_object: dict):
@@ -113,8 +117,7 @@ class Linux(BasePlatformDNS):
         # get default interface
         interfaces = Linux.get_all_ethernet_interfaces()
         selected_interface = questionary.select(
-            choices=interfaces,
-            message="Select your main ethernet interface"
+            choices=interfaces, message="Select your main ethernet interface"
         ).ask()
 
         if self.does_config_exist():
@@ -123,5 +126,5 @@ class Linux(BasePlatformDNS):
             self.create_config_file()
             config_object = self.get_config_file()
 
-        config_object['default-ethernet-interface'] = selected_interface
+        config_object["default-ethernet-interface"] = selected_interface
         self.update_config_file(config_object=config_object)

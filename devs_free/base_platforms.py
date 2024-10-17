@@ -7,7 +7,6 @@
  * https://github.com/alisharify7/devs_free
 """
 
-
 from abc import ABC
 
 
@@ -24,9 +23,9 @@ class BasePlatform(ABC):
         "main-interface": None,
         "all-interfaces": [],
         "cache": {
-            "servers": {"name": None,"ip": []},
+            "servers": {"name": None, "ip": []},
             "fetched-at": None,
-        }
+        },
     }
 
     # DNS CONFIG
@@ -34,12 +33,9 @@ class BasePlatform(ABC):
     docker_default_config = {
         "mirror-url": None,
         "internet": {
-            "cache": {
-                "name": None,
-                "link": []
-            },
+            "cache": {"name": None, "link": []},
             "fetched-at": None,
-        }
+        },
     }
 
     # APT CONFIG
@@ -47,12 +43,9 @@ class BasePlatform(ABC):
     apt_default_config = {
         "mirror-url": None,
         "internet": {
-            "cache":{
-                "name": None,
-                "link": []
-            },
+            "cache": {"name": None, "link": []},
             "fetched-at": None,
-        }
+        },
     }
 
     # PIP CONFIG
@@ -60,10 +53,7 @@ class BasePlatform(ABC):
     pip_default_config = {
         "mirror-url": None,
         "internet": {
-            "cache": {
-                "name": None,
-                "link": []
-            },
+            "cache": {"name": None, "link": []},
             "fetched-at": None,
-        }
+        },
     }

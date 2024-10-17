@@ -1,8 +1,6 @@
 import click
 
 
-
-
 @click.group()
 def config():
     """config manager"""

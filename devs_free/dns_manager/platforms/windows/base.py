@@ -7,7 +7,6 @@
  * https://github.com/alisharify7/devs_free
 """
 
-
 import re
 import os
 import json
@@ -18,10 +17,9 @@ import questionary
 from devs_free.dns_manager.base_platforms import BasePlatformDNS
 
 
-
-
 class Windows(BasePlatformDNS):
     """Window DNS manager base class"""
+
     @staticmethod
     def get_all_ethernet_interfaces():
         """this method returns all available ethernet interfaces
@@ -43,13 +41,13 @@ class Windows(BasePlatformDNS):
 
         with open(self.get_config_dir() / BasePlatformDNS.dns_config_file, "r") as f:
             data = json.load(fp=f)
-        return data['main-interface']
+        return data["main-interface"]
 
     @staticmethod
     def get_current_username():
         """get os current username"""
-        command = 'whoami'
-        output = subprocess.check_output([command]).decode('utf-8')
+        command = "whoami"
+        output = subprocess.check_output([command]).decode("utf-8")
         return str(output.rsplit("\\")[-1]).strip()
 
     def does_config_exist(self):
@@ -58,7 +56,9 @@ class Windows(BasePlatformDNS):
 
     def get_config_dir(self):
         """get config directory"""
-        conf_dir = pathlib.Path(f"C:\\Users\\{Windows.get_current_username()}\\devs_free\\")
+        conf_dir = pathlib.Path(
+            f"C:\\Users\\{Windows.get_current_username()}\\devs_free\\"
+        )
         if os.path.exists(conf_dir):
             return conf_dir
         else:
@@ -66,8 +66,10 @@ class Windows(BasePlatformDNS):
             return conf_dir
 
     def create_config_file(self):
-        """create dns config file from base default config """
-        with open(file=str(self.get_config_dir() / BasePlatformDNS.dns_config_file), mode="w") as f:
+        """create dns config file from base default config"""
+        with open(
+            file=str(self.get_config_dir() / BasePlatformDNS.dns_config_file), mode="w"
+        ) as f:
             json.dump(BasePlatformDNS.dns_default_config, fp=f)
 
     def get_config_file(self):
@@ -75,11 +77,13 @@ class Windows(BasePlatformDNS):
         if not self.does_config_exist():
             raise RuntimeError("config file does not exist")
 
-        with open(file=str(self.get_config_dir() / BasePlatformDNS.dns_config_file), mode="r") as f:
+        with open(
+            file=str(self.get_config_dir() / BasePlatformDNS.dns_config_file), mode="r"
+        ) as f:
             return json.load(f)
 
     def update_config_file(self, config_object: dict):
-        """update config file with new config """
+        """update config file with new config"""
         with open(self.get_config_dir() / BasePlatformDNS.dns_config_file, "w") as f:
             json.dump(config_object, fp=f)
 
@@ -87,8 +91,7 @@ class Windows(BasePlatformDNS):
         """this method initializes DNS config file"""
         interfaces = Windows.get_all_ethernet_interfaces()
         selected_interface = questionary.select(
-            choices=interfaces,
-            message="Select your main ethernet interface"
+            choices=interfaces, message="Select your main ethernet interface"
         ).ask()
 
         if self.does_config_exist():
@@ -97,5 +100,5 @@ class Windows(BasePlatformDNS):
             self.create_config_file()
             config_object = self.get_config_file()
 
-        config_object['main-interface'] = selected_interface
+        config_object["main-interface"] = selected_interface
         self.update_config_file(config_object=config_object)

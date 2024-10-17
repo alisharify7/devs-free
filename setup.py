@@ -7,7 +7,6 @@
  * https://github.com/alisharify7/devs_free
 """
 
-
 from setuptools import setup, find_packages
 
 __NAME__ = "devs_free"
@@ -50,18 +49,16 @@ with open("./README.md", "r") as f:
             "pyfiglet>=1.0.2",
             # "inquirerpy>=0.3.4",
             "questionary>=2.0.1",
-            "click>=8.1.7"
+            "click>=8.1.7",
         ],
         python_requires=">=3.8",
-        keywords='dns, cli, python-dns-changer',
+        keywords="dns, cli, python-dns-changer",
         entry_points={
-            'console_scripts': [
-                'devs_free = devs_free.cli_entrypoint:devs',
-                'devs-free = devs_free.cli_entrypoint:devs',
-                'developer-free = devs_free.cli_entrypoint:devs',
-                'developer_free = devs_free.cli_entrypoint:devs',
+            "console_scripts": [
+                "devs_free = devs_free.cli_entrypoint:devs",
+                "devs-free = devs_free.cli_entrypoint:devs",
+                "developer-free = devs_free.cli_entrypoint:devs",
+                "developer_free = devs_free.cli_entrypoint:devs",
             ],
         },
-
     )
-

@@ -7,5 +7,6 @@
  * https://github.com/alisharify7/devs_free
 """
 
+
 class NotInstalledError(Exception):
-    ...
+    pass

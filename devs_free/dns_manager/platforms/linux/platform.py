@@ -1,11 +1,12 @@
 import subprocess
 from .base import Linux as LinuxBase
 
+
 class Linux(LinuxBase):
     """A class for managing DNS settings on Linux."""
+
     def __init__(self):
         super().__init__()
-
 
     def get_current_dns(self):
         try:

@@ -7,7 +7,6 @@
  * https://github.com/alisharify7/devs_free
 """
 
-
 import re
 import typing
 import subprocess
@@ -18,6 +17,7 @@ from .base import Windows as WindowsBase
 
 class Windows(WindowsBase):
     """Win64 DNS manager class."""
+
     def get_current_dns(self) -> typing.Union[typing.List[str], str]:
         """Retrieve the currently configured DNS servers."""
         try:
@@ -32,10 +32,10 @@ class Windows(WindowsBase):
                 if ip_addresses:
                     return ip_addresses
             else:
-                return ("Error: Could not parse current DNS information.")
+                return "Error: Could not parse current DNS information."
 
         except subprocess.CalledProcessError as e:
-            return (f"Error retrieving current DNS servers: {e}")
+            return f"Error retrieving current DNS servers: {e}"
 
     def set_dns(self, dns_servers: list):
         """Set the DNS server on the system."""
@@ -64,8 +64,8 @@ class Windows(WindowsBase):
                 "add",
                 "dns",
                 f"name={selected_ethernet_interface} ",
-                "address="+dns_servers[-1],
-                "index=2"
+                "address=" + dns_servers[-1],
+                "index=2",
             ]
             out = subprocess.run(command, capture_output=True)
             click.echo(out)

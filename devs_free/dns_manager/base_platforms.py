@@ -7,9 +7,9 @@
  * https://github.com/alisharify7/devs_free
 """
 
-
 from abc import ABC
 from devs_free.base_platforms import BasePlatform
+
 
 class BasePlatformDNS(BasePlatform, ABC):
     """
@@ -17,6 +17,7 @@ class BasePlatformDNS(BasePlatform, ABC):
     all dns manager classes should inherit from this class,
     and implement the all methods that this class contain.
     """
+
     def get_all_ethernet_interfaces(self):
         raise NotImplemented()
 
@@ -43,5 +44,3 @@ class BasePlatformDNS(BasePlatform, ABC):
 
     def set_up_init_config(self):
         raise NotImplemented()
-
-
