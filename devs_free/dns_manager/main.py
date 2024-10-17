@@ -27,6 +27,7 @@ def dns():
 
 
 @dns.command(help="list all avialable dns servers from upstream server.")
+@click.option('-s', '--save', help='save the result in the cache db', required=False, default='yes', type=str, show_default=True)
 @dns_config_required
 def list():
     """get list of all available dns servers"""

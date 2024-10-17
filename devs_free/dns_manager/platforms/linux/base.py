@@ -126,5 +126,5 @@ class Linux(BasePlatformDNS):
             self.create_config_file()
             config_object = self.get_config_file()
 
-        config_object["default-ethernet-interface"] = selected_interface
+        config_object["main-interface"] = selected_interface
         self.update_config_file(config_object=config_object)
