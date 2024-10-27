@@ -47,8 +47,8 @@ class Linux(BasePlatformDNS):
         :return: list of all available ethernet interfaces.
         :rtype: typing.List[str]
         """
-        regex_pattern = r"^(\S+)\s+(\S+)\s+(\S+)\s+--(.*)$"
-        expected_output_regex_pattern = r"^(DEVICE) .+(TYPE) .+(STATE) .+(CONNECTION)$"
+        regex_pattern = r"*([\w-]{2,666}) *"
+        expected_output_regex_pattern = r"( *(DEVICE|TYPE|STATE|CONNECTION) *)"
         output = subprocess.check_output(["nmcli", "device", "status"]).decode()
         if not re.match(expected_output_regex_pattern, output):
             raise Exception("an error occurred in fetching all ethernet interfaces")
@@ -109,6 +109,7 @@ class Linux(BasePlatformDNS):
             return json.load(f)
 
     def update_config_file(self, config_object: dict):
+        """update config file and replace new content with old content"""
         with open(self.get_config_dir() / BasePlatform.dns_config_file, "w") as f:
             json.dump(config_object, fp=f)
 
