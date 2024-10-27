@@ -55,10 +55,10 @@ with open("./README.md", "r") as f:
         keywords="dns, cli, python-dns-changer",
         entry_points={
             "console_scripts": [
-                "devs_free = devs_free.cli_entrypoint:devs",
-                "devs-free = devs_free.cli_entrypoint:devs",
-                "developer-free = devs_free.cli_entrypoint:devs",
-                "developer_free = devs_free.cli_entrypoint:devs",
+                "devs_free = devs_free.cli:devs",
+                "devs-free = devs_free.cli:devs",
+                "developer-free = devs_free.cli:devs",
+                "developer_free = devs_free.cli:devs",
             ],
         },
     )

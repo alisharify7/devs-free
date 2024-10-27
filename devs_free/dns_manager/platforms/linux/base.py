@@ -50,7 +50,7 @@ class Linux(BasePlatformDNS):
         regex_pattern = r"*([\w-]{2,666}) *"
         expected_output_regex_pattern = r"( *(DEVICE|TYPE|STATE|CONNECTION) *)"
         output = subprocess.check_output(["nmcli", "device", "status"]).decode()
-        if not re.match(expected_output_regex_pattern, output):
+        if not re.search(expected_output_regex_pattern, output):
             raise Exception("an error occurred in fetching all ethernet interfaces")
 
         interfaces = []
