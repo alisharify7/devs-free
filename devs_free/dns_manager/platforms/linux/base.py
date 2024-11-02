@@ -47,18 +47,20 @@ class Linux(BasePlatformDNS):
         :return: list of all available ethernet interfaces.
         :rtype: typing.List[str]
         """
-        regex_pattern = r"*([\w-]{2,666}) *"
+        regex_pattern = r"( *(:?[\w-]{2,666}) *)"
         expected_output_regex_pattern = r"( *(DEVICE|TYPE|STATE|CONNECTION) *)"
+
         output = subprocess.check_output(["nmcli", "device", "status"]).decode()
-        if not re.search(expected_output_regex_pattern, output):
+        if not re.search(expected_output_regex_pattern, output, re.MULTILINE):
             raise Exception("an error occurred in fetching all ethernet interfaces")
 
-        interfaces = []
-        result = re.findall(regex_pattern, output, re.MULTILINE)
-        for each in result:
-            device, ttype, state, connection = each
-            interfaces.append(f"{device}, {ttype}, {state}, {connection}")
+        output = output.split("\n")
 
+        interfaces = []
+        for each in output:
+            if each:
+                row = ", ".join(each)
+                interfaces.append(each)
         return interfaces
 
     def get_selected_ethernet_interfaces(self) -> str:
@@ -117,6 +119,7 @@ class Linux(BasePlatformDNS):
         """Set up init config"""
         # get default interface
         interfaces = Linux.get_all_ethernet_interfaces()
+
         selected_interface = questionary.select(
             choices=interfaces, message="Select your main ethernet interface"
         ).ask()
