@@ -26,16 +26,7 @@ def dns():
     pass
 
 
-@dns.command(help="list all avialable dns servers from upstream server.")
-@click.option(
-    "-s",
-    "--save",
-    help="save the result in the cache db",
-    required=False,
-    default="yes",
-    type=str,
-    show_default=True,
-)
+@dns.command(help="list all available dns servers from upstream server.")
 @dns_config_required
 def list():
     """get list of all available dns servers"""
@@ -105,9 +96,9 @@ def connect():
     click.echo(click.style(text=f"category: {', '.join(selected_dns['tags'])}"))
 
     if platform == "windows":
-        print(Windows().set_dns(selected_dns["servers"]))
+        click.echo(Windows().set_dns(selected_dns["servers"]))
     elif platform == "linux":
-        print(Linux().set_dns(selected_dns["servers"]))
+        click.echo(Linux().set_dns(selected_dns["servers"]))
     else:
         raise NotImplemented("sorry :(")
 

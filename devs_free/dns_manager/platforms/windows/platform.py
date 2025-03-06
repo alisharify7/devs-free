@@ -39,56 +39,38 @@ class Windows(WindowsBase):
 
     def set_dns(self, dns_servers: list):
         """Set the DNS server on the system."""
+        self.unset_dns(self.get_current_dns())
+        selected_ethernet_interface = self.get_main_ethernet_interfaces()
         try:
-            # Use netsh command for setting DNS
-
-            selected_ethernet_interface = self.get_main_ethernet_interfaces()
-
-            command = [
-                "netsh",
-                "interface",
-                "ip",
-                "set",
-                "dns",
-                f"name={selected_ethernet_interface}",
-                "static",
-                dns_servers[0],
-            ]
-            out = subprocess.run(command, capture_output=True)
-            click.echo(out)
-
-            command = [
-                "netsh",
-                "interface",
-                "ip",
-                "add",
-                "dns",
-                f"name={selected_ethernet_interface} ",
-                "address=" + dns_servers[-1],
-                "index=2",
-            ]
-            out = subprocess.run(command, capture_output=True)
-            click.echo(out)
-        except subprocess.CalledProcessError as e:
-            print(f"Error in setting DNS servers: {e}")
-
-    def unset_dns(self):
-        """Unset the DNS server on the system."""
-        try:
-            # Use netsh command to reset DNS to automatic
-            subprocess.run(
-                [
+            for index, ip in enumerate(dns_servers):
+                command = [
                     "netsh",
                     "interface",
                     "ip",
-                    "set",
+                    "add",
                     "dns",
-                    "name=",
-                    "static",
-                    "address=",
-                ],
-                check=True,
-            )
-            print("DNS server unset successfully.")
+                    f"name=\"{selected_ethernet_interface}\"",
+                    f"address=\"{ip}\"",
+                    f"index={index}",
+                ]
+                out = subprocess.run(command, capture_output=True)
         except subprocess.CalledProcessError as e:
-            print(f"Error unsetting DNS server: {e}")
+            print(f"Error in setting DNS servers: {e}")
+
+    def unset_dns(self, dns_servers: list):
+        """Unset the DNS server on the system."""
+        selected_ethernet_interface = self.get_main_ethernet_interfaces()
+        for dns in dns_servers:
+            try:
+                command = [
+                    "netsh",
+                    "interface",
+                    "ip",
+                    "delete",
+                    "dns",
+                    f"name=\"{selected_ethernet_interface}\"",
+                    f"address=\"{dns}\"",
+                ]
+                out = subprocess.run(command, capture_output=True)
+            except subprocess.CalledProcessError as e:
+                print(f"Error in setting DNS servers: {e}")

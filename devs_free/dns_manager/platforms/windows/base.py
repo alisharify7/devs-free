@@ -26,12 +26,13 @@ class Windows(BasePlatformDNS):
         Using `ip link show`
         """
         interfaces = []
-        output = subprocess.check_output(["ipconfig", "/all"]).decode()
-        for line in output.splitlines():
-            if line.startswith("Ethernet adapter"):
-                line = line.replace(":", "")
-                interfaces.append(line)
+        output = subprocess.check_output(["netsh", "interface", "show" ,"interface"]).decode()
+        # Regex pattern to extract interface names
+        pattern = r'^\s*Enabled\s+Connected\s+Dedicated\s+(.+)$'
 
+        # Extract interface names
+        interfaces = re.findall(pattern, output, re.MULTILINE)
+        interfaces = [str(interface).strip() for interface in interfaces]
         return interfaces
 
     def get_main_ethernet_interfaces(self):
