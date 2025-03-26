@@ -49,8 +49,8 @@ class Windows(WindowsBase):
                     "ip",
                     "add",
                     "dns",
-                    f"name=\"{selected_ethernet_interface}\"",
-                    f"address=\"{ip}\"",
+                    f'name="{selected_ethernet_interface}"',
+                    f'address="{ip}"',
                     f"index={index}",
                 ]
                 out = subprocess.run(command, capture_output=True)
@@ -68,8 +68,8 @@ class Windows(WindowsBase):
                     "ip",
                     "delete",
                     "dns",
-                    f"name=\"{selected_ethernet_interface}\"",
-                    f"address=\"{dns}\"",
+                    f'name="{selected_ethernet_interface}"',
+                    f'address="{dns}"',
                 ]
                 out = subprocess.run(command, capture_output=True)
             except subprocess.CalledProcessError as e:

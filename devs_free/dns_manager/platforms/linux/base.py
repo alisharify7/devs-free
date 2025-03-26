@@ -7,7 +7,7 @@ import typing
 
 import questionary
 
-from devs_free.dns_manager.base_platforms import BasePlatformDNS
+from devs_free.dns_manager.platforms.base_managers import BasePlatformDNS
 from devs_free.exception import NotInstalledError
 from devs_free.base_platforms import BasePlatform
 
@@ -15,7 +15,7 @@ from devs_free.base_platforms import BasePlatform
 class Linux(BasePlatformDNS):
     """
     Base Linux DNS manager class.
-    don't use this class directly, use `devs_free.dns_manager.linux.Linux` instead.
+    don't use this class directly,
     """
 
     def __init__(self):
@@ -73,7 +73,7 @@ class Linux(BasePlatformDNS):
         if not self.does_config_exist():
             self.set_up_init_config()
 
-        with open(self.get_config_dir() / BasePlatform.dns_config_file, "r") as f:
+        with open(self.get_config_dir() / BasePlatform.DNS_CONFIG_FILE_NAME, "r") as f:
             data = json.load(fp=f)
         return data["default-ethernet-interface"]
 
@@ -90,14 +90,14 @@ class Linux(BasePlatformDNS):
 
     def does_config_exist(self):
         """check if config file exists or not"""
-        return os.path.exists(self.get_config_dir() / BasePlatform.dns_config_file)
+        return os.path.exists(self.get_config_dir() / BasePlatform.DNS_CONFIG_FILE_NAME)
 
     def create_config_file(self):
         """create config file"""
         if not os.path.exists(self.get_config_dir()):
             os.makedirs(self.get_config_dir())
         with open(
-            file=str(self.get_config_dir() / BasePlatform.dns_config_file), mode="w"
+            file=str(self.get_config_dir() / BasePlatform.DNS_CONFIG_FILE_NAME), mode="w"
         ) as f:
             json.dump(BasePlatform.dns_base_config, fp=f)
 
@@ -106,13 +106,13 @@ class Linux(BasePlatformDNS):
             raise RuntimeError("config file does not exist")
 
         with open(
-            file=str(self.get_config_dir() / BasePlatform.dns_config_file), mode="r"
+            file=str(self.get_config_dir() / BasePlatform.DNS_CONFIG_FILE_NAME), mode="r"
         ) as f:
             return json.load(f)
 
     def update_config_file(self, config_object: dict):
         """update config file and replace new content with old content"""
-        with open(self.get_config_dir() / BasePlatform.dns_config_file, "w") as f:
+        with open(self.get_config_dir() / BasePlatform.DNS_CONFIG_FILE_NAME, "w") as f:
             json.dump(config_object, fp=f)
 
     def set_up_init_config(self):

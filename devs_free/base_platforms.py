@@ -21,8 +21,8 @@ class BasePlatform(ABC):
     """
 
     # global DNS CONFIG file + structure
-    dns_config_file = "devs_free_dns.json"
-    dns_default_config = {
+    DNS_CONFIG_FILE_NAME = "devs_free_dns.json"
+    DNS_DEFAULT_CONFIG = {
         "main-interface": None,
         "all-interfaces": [],
         "cache": {
@@ -32,8 +32,8 @@ class BasePlatform(ABC):
     }
 
     # global DNS CONFIG file + structure
-    docker_config_file = "devs_free_docker.json"
-    docker_default_config = {
+    DOCKER_CONFIG_FILE_NAME = "devs_free_docker.json"
+    DOCKER_DEFAULT_CONFIG = {
         "mirror-url": None,
         "internet": {
             "cache": {"name": None, "link": []},
@@ -42,8 +42,8 @@ class BasePlatform(ABC):
     }
 
     # global APT CONFIG file + structure
-    apt_config_file = "devs_free_apt.json"
-    apt_default_config = {
+    APT_CONFIG_FILE_NAME = "devs_free_apt.json"
+    APT_DEFAULT_CONFIG = {
         "mirror-url": None,
         "internet": {
             "cache": {"name": None, "link": []},
@@ -52,8 +52,8 @@ class BasePlatform(ABC):
     }
 
     # global PIP CONFIG file + structure
-    pip_config_file = "devs_free_pip.json"
-    pip_default_config = {
+    PIP_CONFIG_FILE_NAME = "devs_free_pip.json"
+    PIP_DEFAULT_CONFIG = {
         "mirror-url": None,
         "internet": {
             "cache": {"name": None, "link": []},

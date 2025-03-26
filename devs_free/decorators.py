@@ -37,3 +37,7 @@ def dns_config_required(f):
         return f(*args, **kwargs)
 
     return inner
+
+
+def config_required(config_name: str):
+    pass

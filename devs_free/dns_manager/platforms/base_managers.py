@@ -18,7 +18,8 @@ class BasePlatformDNS(BasePlatform, ABC):
     and they should implement the all methods that this class contain.
     """
 
-    def get_all_ethernet_interfaces(self):
+    @staticmethod
+    def get_all_ethernet_interfaces():
         """get all available Ethernet interfaces on the current platform."""
         raise NotImplemented()
 
@@ -26,7 +27,8 @@ class BasePlatformDNS(BasePlatform, ABC):
         """get current selected Ethernet interfaces on the current platform."""
         raise NotImplemented()
 
-    def get_current_username(self):
+    @staticmethod
+    def get_current_username():
         """get current user of the OS."""
         raise NotImplemented()
 

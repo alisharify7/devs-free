@@ -9,4 +9,4 @@ def config():
 
 @config.command()
 def show():
-    print("config")
+    pass
