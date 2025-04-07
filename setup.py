@@ -7,6 +7,8 @@
  * https://github.com/alisharify7/devs_free
 """
 
+# TODO: replace with pyproject.toml file
+
 from setuptools import setup, find_packages
 
 __NAME__ = "devs_free"
